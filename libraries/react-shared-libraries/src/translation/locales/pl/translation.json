@@ -1156,5 +1156,20 @@
   "instagram_original_sound": "Oryginalny dźwięk",
   "instagram_search_audio": "Szukaj dźwięku (puste pokazuje popularne)",
   "instagram_no_audio_found": "Nie znaleziono dźwięku",
-  "total": "Razem"
+  "total": "Razem",
+  "are_you_sure_revoke_access": "Czy na pewno cofnąć dostęp dla {{name}}?",
+  "channel_connected_description": "Kanał {{provider}} został połączony. Możesz zamknąć to okno.",
+  "select_the_page_or_account": "Wybierz stronę lub konto {{provider}}, które chcesz połączyć.",
+  "tumblr_no_blogs_found": "Nie znaleźliśmy żadnego bloga Tumblr połączonego z Twoim kontem.",
+  "tumblr_ensure_blog_exists": "Upewnij się, że na koncie Tumblr masz blog, na którym można publikować.",
+  "tumblr_try_again": "Zamknij to okno, usuń integrację i spróbuj ponownie.",
+  "select_tumblr_blog": "Wybierz blog Tumblr:",
+  "youtube_no_channels_found": "Nie znaleźliśmy żadnego kanału YouTube połączonego z tym kontem.",
+  "youtube_ensure_channel_exists": "Upewnij się, że kanał YouTube istnieje. Jeśli to kanał marki, wybierz go przy logowaniu Google.",
+  "youtube_try_again": "Zamknij to okno, usuń integrację i spróbuj ponownie.",
+  "select_channel": "Wybierz kanał YouTube:",
+  "gmb_no_locations_found": "Nie znaleźliśmy żadnej wizytówki firmy połączonej z Twoim kontem.",
+  "gmb_ensure_business_verified": "Upewnij się, że firma jest zweryfikowana w Profilu Firmy w Google.",
+  "gmb_try_again": "Zamknij to okno, usuń integrację i spróbuj ponownie.",
+  "select_location": "Wybierz lokalizację firmy:"
 }
