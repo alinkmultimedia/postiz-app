@@ -320,8 +320,8 @@ export class IntegrationService {
   ) {
     await this._notificationService.inAppNotification(
       orgId,
-      `Could not refresh your ${integration.providerIdentifier} channel`,
-      `Could not refresh your ${integration.providerIdentifier} channel ${err}. Please go back to the system and connect it again ${process.env.FRONTEND_URL}/launches`,
+      `Nie udało się odświeżyć kanału ${integration.providerIdentifier}`,
+      `Nie udało się odświeżyć kanału ${integration.providerIdentifier}: ${err}. Wróć do Postiz i połącz go ponownie: ${process.env.FRONTEND_URL}/launches`,
       true,
       false,
       'info'
