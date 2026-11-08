@@ -1103,7 +1103,10 @@ export const Impersonate = () => {
                 <div className="flex-1 mobile:basis-full">
                   <Input
                     autoComplete="off"
-                    placeholder="Write the user details"
+                    placeholder={t(
+                      'ui_write_user_details',
+                      'Write the user details'
+                    )}
                     name="impersonate"
                     disableForm={true}
                     label=""

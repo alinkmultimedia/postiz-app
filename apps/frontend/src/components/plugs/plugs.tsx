@@ -21,6 +21,7 @@ export const Plugs = () => {
   const [current, setCurrent] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const toaster = useToaster();
+  const t = useT();
   const load = useCallback(async () => {
     return (await (await fetch('/integrations/list')).json()).integrations;
   }, []);
@@ -49,8 +50,6 @@ export const Plugs = () => {
     refreshWhenOffline: false,
     fallbackData: [],
   });
-
-  const t = useT();
 
   const sortedIntegrations = useMemo(() => {
     return orderBy(
@@ -122,7 +121,10 @@ export const Plugs = () => {
                 onClick={() => {
                   if (integration.refreshNeeded) {
                     toaster.show(
-                      'Please refresh the integration from the calendar',
+                      t(
+                        'ui_refresh_integration_from_calendar',
+                        'Please refresh the integration from the calendar'
+                      ),
                       'warning'
                     );
                     return;

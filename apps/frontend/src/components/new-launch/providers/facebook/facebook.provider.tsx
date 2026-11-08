@@ -21,10 +21,12 @@ const postType = [
   {
     value: 'post',
     label: 'Post',
+    tKey: 'post',
   },
   {
     value: 'story',
     label: 'Story',
+    tKey: 'ui_story',
   },
 ];
 
@@ -62,7 +64,7 @@ export const FacebookSettings = () => {
           </option>
           {postType.map((item) => (
             <option key={item.value} value={item.value}>
-              {item.label}
+              {t(item.tKey, item.label)}
             </option>
           ))}
         </Select>

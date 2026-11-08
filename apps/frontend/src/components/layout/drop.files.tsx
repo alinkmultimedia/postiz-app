@@ -15,7 +15,13 @@ export const DropFiles: FC<{
   const { getRootProps, isDragActive } = useDropzone({
     onDrop: (files) => {
       if (props.disabled) {
-        toaster.show('Upload current in progress, please wait and then try again.', 'warning');
+        toaster.show(
+          t(
+            'ui_upload_in_progress',
+            'Upload current in progress, please wait and then try again.'
+          ),
+          'warning'
+        );
         return ;
       }
       props.onDrop(files);

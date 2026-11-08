@@ -16,22 +16,27 @@ import { MediaComponent } from '@gitroom/frontend/components/media/media.compone
 const whoCanReply = [
   {
     label: 'Everyone',
+    tKey: 'ui_x_reply_everyone',
     value: 'everyone',
   },
   {
     label: 'Accounts you follow',
+    tKey: 'ui_x_reply_following',
     value: 'following',
   },
   {
     label: 'Mentioned accounts',
+    tKey: 'ui_x_reply_mentioned',
     value: 'mentionedUsers',
   },
   {
     label: 'Subscribers',
+    tKey: 'ui_x_reply_subscribers',
     value: 'subscribers',
   },
   {
     label: 'Verified accounts',
+    tKey: 'ui_x_reply_verified',
     value: 'verified',
   },
 ];
@@ -103,7 +108,7 @@ const SettingsComponent = () => {
           >
             {whoCanReply.map((item) => (
               <option key={item.value} value={item.value}>
-                {item.label}
+                {t(item.tKey, item.label)}
               </option>
             ))}
           </Select>

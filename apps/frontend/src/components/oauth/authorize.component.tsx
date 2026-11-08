@@ -5,10 +5,12 @@ import { useSearchParams } from 'next/navigation';
 import { useFetch } from '@gitroom/helpers/utils/custom.fetch';
 import { Logo } from '@gitroom/frontend/components/new-layout/logo';
 import { OAuthSelfHosted } from '@gitroom/frontend/components/oauth/self.hosted.component';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
   const searchParams = useSearchParams();
   const fetch = useFetch();
+  const t = useT();
   const [appInfo, setAppInfo] = useState<any>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -25,12 +27,22 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
 
   useEffect(() => {
     if (!clientId || !responseType) {
-      setError('Missing required parameters (client_id, response_type)');
+      setError(
+        t(
+          'ui_oauth_missing_params',
+          'Missing required parameters (client_id, response_type)'
+        )
+      );
       setLoading(false);
       return;
     }
     if (responseType !== 'code') {
-      setError('Only response_type=code is supported');
+      setError(
+        t(
+          'ui_oauth_only_code_supported',
+          'Only response_type=code is supported'
+        )
+      );
       setLoading(false);
       return;
     }
@@ -51,14 +63,22 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
       .then((r) => r.json())
       .then((data) => {
         if (data.statusCode && data.statusCode >= 400) {
-          setError(data.message || 'Invalid OAuth request');
+          setError(
+            data.message ||
+              t('ui_oauth_invalid_request', 'Invalid OAuth request')
+          );
         } else {
           setAppInfo(data);
         }
         setLoading(false);
       })
       .catch(() => {
-        setError('Failed to validate OAuth request');
+        setError(
+          t(
+            'ui_oauth_validate_failed',
+            'Failed to validate OAuth request'
+          )
+        );
         setLoading(false);
       });
   }, [
@@ -95,7 +115,12 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
           window.location.href = result.redirect;
         }
       } catch {
-        setError('Failed to process authorization');
+        setError(
+          t(
+            'ui_oauth_process_failed',
+            'Failed to process authorization'
+          )
+        );
         setSubmitting(false);
       }
     },
@@ -121,7 +146,7 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
             <Logo />
           </div>
           <div className="text-[16px] text-gray-400">
-            Please wait...
+            {t('ui_please_wait', 'Please wait...')}
           </div>
           <div className="mt-[32px] flex justify-center">
             <div className="w-[48px] h-[48px] border-[3px] border-[#612BD3] border-t-transparent rounded-full animate-spin" />
@@ -156,7 +181,7 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
             </svg>
           </div>
           <div className="text-[28px] font-semibold mb-[12px]">
-            Authorization Error
+            {t('ui_authorization_error', 'Authorization Error')}
           </div>
           <div className="text-[16px] text-gray-400 max-w-[400px]">
             {error}
@@ -223,13 +248,27 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
             <>
               <div className="border-t border-[#2A2929] pt-[16px]">
                 <div className="text-[14px] text-gray-400 mb-[12px]">
-                  This application is requesting access to your Postiz
-                  account. It will be able to:
+                  {t(
+                    'ui_oauth_app_requests_access',
+                    'This application is requesting access to your Veltrante account. It will be able to:'
+                  )}
                 </div>
                 <ul className="text-[14px] list-disc list-inside space-y-[4px]">
-                  <li>Access your integrations and channels</li>
-                  <li>Create and schedule posts on your behalf</li>
-                  <li>Read your post analytics</li>
+                  <li>
+                    {t(
+                      'ui_oauth_scope_integrations',
+                      'Access your integrations and channels'
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      'ui_oauth_scope_posts',
+                      'Create and schedule posts on your behalf'
+                    )}
+                  </li>
+                  <li>
+                    {t('ui_oauth_scope_analytics', 'Read your post analytics')}
+                  </li>
                 </ul>
               </div>
 
@@ -240,14 +279,14 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
                     disabled={submitting}
                     className="flex-1 bg-[#612BD3] hover:bg-[#7B3FF2] disabled:opacity-50 text-white rounded-[8px] py-[10px] px-[16px] text-[14px] font-semibold transition-colors"
                   >
-                    Authorize
+                    {t('ui_authorize', 'Authorize')}
                   </button>
                   <button
                     onClick={() => handleAction('deny')}
                     disabled={submitting}
                     className="flex-1 bg-[#2A2929] hover:bg-[#3A3939] disabled:opacity-50 text-white rounded-[8px] py-[10px] px-[16px] text-[14px] font-semibold transition-colors"
                   >
-                    Deny
+                    {t('ui_deny', 'Deny')}
                   </button>
                 </div>
               ) : (
@@ -255,7 +294,7 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
                   onClick={signIn}
                   className="bg-[#612BD3] hover:bg-[#7B3FF2] text-white rounded-[8px] py-[10px] px-[16px] text-[14px] font-semibold transition-colors"
                 >
-                  Sign in to Postiz
+                  {t('ui_sign_in_to_veltrante', 'Sign in to Veltrante')}
                 </button>
               )}
 
@@ -265,7 +304,7 @@ export const OAuthAuthorize: FC<{ logged: boolean }> = ({ logged }) => {
                   disabled={submitting}
                   className="text-[14px] text-gray-400 hover:text-white disabled:opacity-50 transition-colors"
                 >
-                  Use self-hosted
+                  {t('ui_use_self_hosted', 'Use self-hosted')}
                 </button>
               )}
             </>

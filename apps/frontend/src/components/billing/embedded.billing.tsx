@@ -1,6 +1,7 @@
 'use client';
 
 import { Stripe } from '@stripe/stripe-js';
+import { formatDate } from '@gitroom/frontend/components/layout/date.formats';
 
 import { FC, useEffect, useState } from 'react';
 import {
@@ -211,7 +212,7 @@ const PriceBreakdown: FC = () => {
   const dueToday = checkout?.total?.total?.amount || '$0.00';
   const nextBillingTotal = recurring?.dueNext?.total?.amount;
   const nextBillingDate = recurring?.trial?.trialEnd
-    ? newDayjs(recurring.trial.trialEnd * 1000).format('MMMM D, YYYY')
+    ? formatDate(newDayjs(recurring.trial.trialEnd * 1000))
     : null;
   const billingInterval =
     recurring?.interval === 'month'
@@ -360,11 +361,11 @@ const AppliedCouponDisplay: FC<{
 
     if (expiresAt && typeof expiresAt === 'number') {
       const date = new Date(expiresAt * 1000);
-      return newDayjs(date).format('MMMM D, YYYY');
+      return formatDate(newDayjs(date));
     }
 
     if (expiresAt && typeof expiresAt === 'string') {
-      return newDayjs(expiresAt).format('MMMM D, YYYY');
+      return formatDate(newDayjs(expiresAt));
     }
 
     return null;
@@ -618,9 +619,9 @@ const SubmitBar: FC<{ loading: boolean }> = ({ loading }) => {
             {t('billing_ending', 'ending')}{' '}
             <br className="hidden mobile:block" />
             <span className="text-textColor font-[600]">
-              {newDayjs(
-                checkout.checkout.recurring?.trial?.trialEnd * 1000
-              ).format('MMMM D, YYYY')}{' '}
+              {formatDate(
+                newDayjs(checkout.checkout.recurring?.trial?.trialEnd * 1000)
+              )}{' '}
               —{' '}
             </span>
             <span className="text-textColor font-[600]">

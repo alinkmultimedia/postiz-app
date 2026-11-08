@@ -13,6 +13,7 @@ import React, {
 } from 'react';
 import { Button } from '@gitroom/react/form/button';
 import { useHotkeys } from 'react-hotkeys-hook';
+import i18next from '@gitroom/react/translation/i18next';
 import clsx from 'clsx';
 import { EventEmitter } from 'events';
 
@@ -388,10 +389,13 @@ export const DecisionModal: FC<{
 export const decisionModalEmitter = new EventEmitter();
 
 export const areYouSure = ({
-  title = 'Are you sure?',
-  description = 'Are you sure you want to close this modal?' as any,
-  approveLabel = 'Yes',
-  cancelLabel = 'No',
+  title = i18next.t('are_you_sure', 'Are you sure?'),
+  description = i18next.t(
+    'ui_are_you_sure_close_modal',
+    'Are you sure you want to close this modal?'
+  ) as any,
+  approveLabel = i18next.t('yes', 'Yes'),
+  cancelLabel = i18next.t('no', 'No'),
   destructive = false,
 } = {}): Promise<boolean> => {
   return new Promise<boolean>((newRes) => {
@@ -418,11 +422,14 @@ export const useDecisionModal = () => {
   const modals = useModals();
   const open = useCallback(
     ({
-      title = 'Are you sure?',
-      description = 'Are you sure you want to close this modal?' as any,
+      title = i18next.t('are_you_sure', 'Are you sure?'),
+      description = i18next.t(
+        'ui_are_you_sure_close_modal',
+        'Are you sure you want to close this modal?'
+      ) as any,
       onlyApprove = false,
-      approveLabel = 'Yes',
-      cancelLabel = 'No',
+      approveLabel = i18next.t('yes', 'Yes'),
+      cancelLabel = i18next.t('no', 'No'),
       destructive = false,
       newRes = undefined as any,
     } = {}) => {

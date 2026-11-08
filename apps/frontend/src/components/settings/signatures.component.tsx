@@ -20,6 +20,7 @@ export const SignaturesComponent: FC<{
   const fetch = useFetch();
   const modal = useModals();
   const toaster = useToaster();
+  const t = useT();
   const load = useCallback(async () => {
     return (await fetch('/signatures')).json();
   }, []);
@@ -27,7 +28,9 @@ export const SignaturesComponent: FC<{
   const addSignature = useCallback(
     (data?: any) => () => {
       modal.openModal({
-        title: data ? 'Edit Signature' : 'Add Signature',
+        title: data
+          ? t('top_title_edit_signature', 'Edit Signature')
+          : t('ui_add_signature', 'Add Signature'),
         withCloseButton: true,
         children: <AddOrRemoveSignature data={data} reload={mutate} />,
       });
@@ -50,13 +53,14 @@ export const SignaturesComponent: FC<{
           method: 'DELETE',
         });
         mutate();
-        toaster.show('Signature deleted successfully', 'success');
+        toaster.show(
+          t('ui_signature_deleted', 'Signature deleted successfully'),
+          'success'
+        );
       }
     },
     []
   );
-
-  const t = useT();
 
   return (
     <div className="flex flex-col">
@@ -169,6 +173,7 @@ const AddOrRemoveSignature: FC<{
 }> = (props) => {
   const { data, reload } = props;
   const toast = useToaster();
+  const t = useT();
   const fetch = useFetch();
   const form = useForm({
     resolver: yupResolver(details),
@@ -188,8 +193,8 @@ const AddOrRemoveSignature: FC<{
       });
       toast.show(
         data?.id
-          ? 'Signature updated successfully'
-          : 'Signature added successfully',
+          ? t('ui_signature_updated', 'Signature updated successfully')
+          : t('ui_signature_added', 'Signature added successfully'),
         'success'
       );
       modal.closeCurrent();
@@ -197,8 +202,6 @@ const AddOrRemoveSignature: FC<{
     },
     [data, modal]
   );
-
-  const t = useT();
 
   return (
     <FormProvider {...form}>
@@ -235,7 +238,7 @@ const AddOrRemoveSignature: FC<{
               onChange={(e) => {
                 form.setValue('content', e.target.value);
               }}
-              placeholder="Write your signature..."
+              placeholder={t('ui_write_signature', 'Write your signature...')}
               autosuggestionsConfig={{
                 textareaPurpose: `Assist me in writing social media signature`,
                 chatApiConfigs: {},

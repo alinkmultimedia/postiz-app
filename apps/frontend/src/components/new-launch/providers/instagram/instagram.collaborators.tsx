@@ -18,10 +18,12 @@ const postType = [
   {
     value: 'post',
     label: 'Post / Reel',
+    tKey: 'ui_post_or_reel',
   },
   {
     value: 'story',
     label: 'Story',
+    tKey: 'ui_story',
   },
 ];
 
@@ -29,10 +31,12 @@ const graduationStrategies = [
   {
     value: 'MANUAL',
     label: 'Manual',
+    tKey: 'ui_manual',
   },
   {
     value: 'SS_PERFORMANCE',
     label: 'Auto (based on performance)',
+    tKey: 'ui_auto_based_on_performance',
   },
 ];
 const InstagramCollaborators: FC<{
@@ -56,7 +60,7 @@ const InstagramCollaborators: FC<{
         <option value="">{t('select_post_type', 'Select Post Type...')}</option>
         {postType.map((item) => (
           <option key={item.value} value={item.value}>
-            {item.label}
+            {t(item.tKey, item.label)}
           </option>
         ))}
       </Select>
@@ -101,7 +105,7 @@ const InstagramCollaborators: FC<{
             >
               {graduationStrategies.map((item) => (
                 <option key={item.value} value={item.value}>
-                  {item.label}
+                  {t(item.tKey, item.label)}
                 </option>
               ))}
             </Select>

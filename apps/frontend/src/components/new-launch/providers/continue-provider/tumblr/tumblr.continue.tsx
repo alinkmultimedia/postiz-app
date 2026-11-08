@@ -1,6 +1,8 @@
 'use client';
 
+import { FC } from 'react';
 import { withContinueProvider } from '../with-continue-provider';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 interface TumblrBlogItem {
   id: string;
@@ -18,6 +20,29 @@ interface TumblrBlogItem {
 interface TumblrBlogSelection {
   id: string;
 }
+
+const TumblrBlogMeta: FC<{ followers?: number; primary?: boolean }> = ({
+  followers,
+  primary,
+}) => {
+  const t = useT();
+  return (
+    <>
+      {!!followers && (
+        <div className="text-xs text-gray-400">
+          {t('ui_followers_count', '{{n}} followers', {
+            n: followers.toLocaleString(),
+          })}
+        </div>
+      )}
+      {primary && (
+        <div className="text-xs text-gray-400">
+          {t('ui_primary_blog', 'Primary')}
+        </div>
+      )}
+    </>
+  );
+};
 
 export const TumblrContinue = withContinueProvider<
   TumblrBlogItem,
@@ -64,12 +89,7 @@ export const TumblrContinue = withContinueProvider<
       {item.username && (
         <div className="text-xs text-gray-500 break-all">{item.username}</div>
       )}
-      {!!item.followers && (
-        <div className="text-xs text-gray-400">
-          {item.followers.toLocaleString()} followers
-        </div>
-      )}
-      {item.primary && <div className="text-xs text-gray-400">Primary</div>}
+      <TumblrBlogMeta followers={item.followers} primary={item.primary} />
     </>
   ),
 });

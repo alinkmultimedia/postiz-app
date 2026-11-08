@@ -15,10 +15,14 @@ const ConnectedComponent: FC<{
 }> = (props) => {
   const { id, login, deleteRepository } = props;
   const fetch = useFetch();
+  const t = useT();
   const disconnect = useCallback(async () => {
     if (
       !(await deleteDialog(
-        'Are you sure you want to disconnect this repository?'
+        t(
+          'ui_disconnect_repository_confirm',
+          'Are you sure you want to disconnect this repository?'
+        )
       ))
     ) {
       return;
@@ -28,8 +32,6 @@ const ConnectedComponent: FC<{
       method: 'DELETE',
     });
   }, []);
-
-  const t = useT();
 
   return (
     <div className="my-[16px] mt-[16px] h-[90px] bg-sixth border-fifth border rounded-[4px] p-[24px]">
@@ -78,7 +80,7 @@ const ConnectComponent: FC<{
       }),
     });
     if (response.status === 404) {
-      toast.show('Repository not found', 'warning');
+      toast.show(t('ui_repository_not_found', 'Repository not found'), 'warning');
       return;
     }
     setConnected(`${select}/${repo}`);
@@ -108,7 +110,7 @@ const ConnectComponent: FC<{
           onChange={(e) => setUrl(e.target.value)}
           name="github"
           label=""
-          placeholder="Full GitHub URL"
+          placeholder={t('ui_full_github_url', 'Full GitHub URL')}
         />
         <Button
           className="h-[44px] mt-[7px]"

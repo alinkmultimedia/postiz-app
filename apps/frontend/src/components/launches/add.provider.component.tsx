@@ -24,10 +24,11 @@ const resolver = classValidatorResolver(ApiKeyDto);
 export const useAddProvider = (update?: () => void, invite?: boolean) => {
   const modal = useModals();
   const fetch = useFetch();
+  const t = useT();
   return useCallback(async () => {
     const data = await (await fetch('/integrations')).json();
     modal.openModal({
-      title: 'Add Channel',
+      title: t('add_channel', 'Add Channel'),
       withCloseButton: true,
       children: (
         <AddProviderComponent invite={!!invite} update={update} {...data} />
@@ -345,11 +346,16 @@ const ChromeExtensionWarning: FC<{
           )}
         </li>
         <li>
-          We will store your cookies securely to facilitate the connection.
+          {t(
+            'ui_chrome_extension_cookies_stored',
+            'We will store your cookies securely to facilitate the connection.'
+          )}
         </li>
         <li>
-          Postiz does not take responsibility for any issues arising or account
-          termination due to the use of this method.
+          {t(
+            'ui_chrome_extension_no_responsibility',
+            'Veltrante does not take responsibility for any issues arising or account termination due to the use of this method.'
+          )}
         </li>
       </ul>
       <div className="flex gap-[10px] mt-[8px]">
@@ -445,7 +451,10 @@ export const AddProviderComponent: FC<{
           }
           const { url } = await response.json();
           modal.openModal({
-            title: `Add ${capitalize(identifier)}`,
+            title: t('ui_add_provider_title', 'Add {{name}}', {
+              name: capitalize(identifier),
+              interpolation: { escapeValue: false },
+            }),
             withCloseButton: true,
             ...(isMobile ? { removeLayout: true, fullScreen: true } : {}),
             classNames: {
@@ -502,7 +511,10 @@ export const AddProviderComponent: FC<{
 
           if (invite) {
             toaster.show(
-              'Invite link copied to clipboard, link will be available for 1 hour',
+              t(
+                'ui_invite_link_copied',
+                'Invite link copied to clipboard, link will be available for 1 hour'
+              ),
               'success'
             );
             modal.closeAll();
@@ -641,7 +653,7 @@ export const AddProviderComponent: FC<{
         }
         if (isExternal) {
           modal.openModal({
-            title: 'URL',
+            title: t('url', 'URL'),
             withCloseButton: true,
             ...(isMobile ? { removeLayout: true, fullScreen: true } : {}),
             classNames: {

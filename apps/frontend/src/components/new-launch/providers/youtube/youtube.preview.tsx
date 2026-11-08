@@ -5,6 +5,7 @@ import { useMediaDirectory } from '@gitroom/react/helpers/use.media.directory';
 import { stripHtmlValidation } from '@gitroom/helpers/utils/strip.html.validation';
 import { textSlicer } from '@gitroom/helpers/utils/count.length';
 import { VideoOrImage } from '@gitroom/react/helpers/video.or.image';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 export const YoutubePreview: FC<{
   maximumCharacters?: number;
@@ -12,6 +13,7 @@ export const YoutubePreview: FC<{
   const { value: topValue, integration } = useIntegration();
   const current = useLaunchStore((state) => state.current);
   const mediaDir = useMediaDirectory();
+  const t = useT();
 
   const renderContent = topValue.map((p) => {
     const newContent = stripHtmlValidation(
@@ -37,7 +39,10 @@ export const YoutubePreview: FC<{
         .replace(/\[\[\[([.\s\S]*?)]]]/, (match, match1) => {
           return `<span class="font-bold font-[arial]" style="color: #ae8afc">${match1}</span>`;
         }) +
-      `<mark class="bg-red-500" data-tooltip-id="tooltip" data-tooltip-content="This text will be cropped">` +
+      `<mark class="bg-red-500" data-tooltip-id="tooltip" data-tooltip-content="${t(
+        'ui_text_will_be_cropped',
+        'This text will be cropped'
+      )}">` +
       newContent.slice(end).replace(/\[\[\[([.\s\S]*?)]]]/, (match, match1) => {
         return `<span class="font-bold font-[arial]" style="color: #ae8afc">${match1}</span>`;
       }) +
@@ -72,11 +77,15 @@ export const YoutubePreview: FC<{
           </div>
           <div className="flex flex-col">
             <div className="text-[14px] font-[500]">{integration?.name}</div>
-            <div className="text-[10px] font-[400]">16.7M subscribers</div>
+            <div className="text-[10px] font-[400]">
+              {t('ui_preview_subscribers_count', '{{n}} subscribers', {
+                n: '16.7M',
+              })}
+            </div>
           </div>
           <div>
             <div className="h-[32px] text-[12px] text-newBgColor font-[500] px-[14px] flex justify-center items-center bg-youtubeButton rounded-[16px]">
-              Subscribe
+              {t('ui_preview_subscribe', 'Subscribe')}
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { FC, useCallback, useMemo, useState } from 'react';
+import { formatShortDate } from '@gitroom/frontend/components/layout/date.formats';
 import useSWR from 'swr';
 import clsx from 'clsx';
 import { capitalize } from 'lodash';
@@ -57,7 +58,7 @@ const formatAmount = (amount: number, currency: string) => {
 };
 
 const formatDate = (unix: number | null) =>
-  unix ? fromUtc(unix * 1000).format('D MMM, YYYY') : '';
+  unix ? formatShortDate(fromUtc(unix * 1000)) : '';
 
 const ActionLink: FC<{
   href: string;

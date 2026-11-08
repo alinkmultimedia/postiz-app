@@ -13,8 +13,8 @@ import {
   isTimezone,
 } from '@gitroom/frontend/components/layout/set.timezone';
 const dateMetrics = [
-  { label: 'AM:PM', value: 'US' },
-  { label: '24 hours', value: 'GLOBAL' },
+  { key: 'ui_time_format_12h', label: '12 hours (AM/PM)', value: 'US' },
+  { key: 'ui_time_format_24h', label: '24 hours', value: 'GLOBAL' },
 ];
 
 // the list has names that aren't IANA timezones (Europe/Zaporizhzhia)
@@ -58,14 +58,14 @@ const MetricComponent = () => {
   );
   return (
     <div className="my-[16px] mt-[16px] bg-sixth border-fifth border rounded-[4px] p-[24px] flex flex-col gap-[24px]">
-      <div className="mt-[4px]">Date Metrics</div>
+      <div className="mt-[4px]">{t('ui_time_format', 'Time format')}</div>
       <Select name="metric" disableForm={true} label="" onChange={changeMetric} value={currentMetric ? 'US' : 'GLOBAL'}>
         {dateMetrics.map((metric) => (
           <option
             key={metric.value}
             value={metric.value}
           >
-            {metric.label}
+            {t(metric.key, metric.label)}
           </option>
         ))}
       </Select>

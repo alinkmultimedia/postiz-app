@@ -297,7 +297,7 @@ export const DatePicker: FC<{
         <CalendarIcon />
       </div>
       <div className="cursor-pointer mobile:hidden">
-        {date.format(isUSCitizen() ? 'MM/DD/YYYY hh:mm A' : 'DD/MM/YYYY HH:mm')}
+        {date.format(isUSCitizen() ? 'MM/DD/YYYY hh:mm A' : 'DD.MM.YYYY HH:mm')}
       </div>
       <div className="cursor-pointer hidden mobile:block truncate">
         {date.format(isUSCitizen() ? 'MMM D, h:mm A' : 'D MMM, HH:mm')}

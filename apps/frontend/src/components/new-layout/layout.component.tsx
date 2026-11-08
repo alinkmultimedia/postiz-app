@@ -45,9 +45,11 @@ import { FirstBillingComponent } from '@gitroom/frontend/components/billing/firs
 import { TrialTracker } from '@gitroom/frontend/components/layout/gtm.component';
 import { setSentryUser } from '@gitroom/react/sentry/initialize.sentry.client';
 import { setUserTimezone } from '@gitroom/frontend/components/layout/set.timezone';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 export const LayoutComponent = ({ children }: { children: ReactNode }) => {
   const fetch = useFetch();
+  const t = useT();
 
   const { backendUrl, billingEnabled, isGeneral } = useVariables();
 
@@ -147,7 +149,7 @@ export const LayoutComponent = ({ children }: { children: ReactNode }) => {
                         <button
                           className="hidden mobile:flex items-center justify-center w-[36px] h-[36px] -ms-[6px] rounded-[8px] text-textItemBlur hover:text-newTextColor hover:bg-boxFocused"
                           onClick={() => setMenuOpen(true)}
-                          aria-label="Open menu"
+                          aria-label={t('ui_open_menu', 'Open menu')}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

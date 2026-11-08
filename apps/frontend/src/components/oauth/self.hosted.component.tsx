@@ -3,6 +3,7 @@
 import { FC, FormEvent, useCallback, useState } from 'react';
 import { useFetch } from '@gitroom/helpers/utils/custom.fetch';
 import { Input } from '@gitroom/react/form/input';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 export const OAuthSelfHosted: FC<{
   appName: string;
@@ -19,6 +20,7 @@ export const OAuthSelfHosted: FC<{
   onBack: () => void;
 }> = ({ appName, askEmail, params, onBack }) => {
   const fetch = useFetch();
+  const t = useT();
   const [instanceUrl, setInstanceUrl] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [email, setEmail] = useState('');
@@ -59,16 +61,24 @@ export const OAuthSelfHosted: FC<{
 
         setError(
           response.status === 429
-            ? 'Too many attempts, try again later'
+            ? t('ui_too_many_attempts', 'Too many attempts, try again later')
             : (Array.isArray(data.message) ? data.message[0] : data.message) ||
-                'Could not connect to your instance'
+                t(
+                  'ui_could_not_connect_instance',
+                  'Could not connect to your instance'
+                )
         );
       } catch {
-        setError('Could not connect to your instance');
+        setError(
+          t(
+            'ui_could_not_connect_instance',
+            'Could not connect to your instance'
+          )
+        );
       }
       setSubmitting(false);
     },
-    [params, instanceUrl, apiKey, email, askEmail]
+    [params, instanceUrl, apiKey, email, askEmail, t]
   );
 
   return (
@@ -77,10 +87,15 @@ export const OAuthSelfHosted: FC<{
       className="border-t border-[#2A2929] pt-[16px] flex flex-col gap-[16px]"
     >
       <div className="flex flex-col gap-[4px]">
-        <div className="text-[16px] font-semibold">Use self-hosted</div>
+        <div className="text-[16px] font-semibold">
+          {t('ui_use_self_hosted', 'Use self-hosted')}
+        </div>
         <div className="text-[14px] text-gray-400">
-          {appName} will work with your own Postiz instance. Postiz Cloud
-          relays its requests, and your API key is stored encrypted.
+          {t(
+            'ui_self_hosted_description',
+            '{{appName}} will work with your own Veltrante instance. Veltrante Cloud relays its requests, and your API key is stored encrypted.',
+            { appName, interpolation: { escapeValue: false } }
+          )}
         </div>
       </div>
 
@@ -107,13 +122,18 @@ export const OAuthSelfHosted: FC<{
           removeError={true}
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
-          placeholder="Settings > Agents / Dev on your instance"
+          placeholder={t(
+            'ui_api_key_placeholder',
+            'Settings > Agents / Dev on your instance'
+          )}
           autoComplete="off"
           spellCheck={false}
         />
         <div className="text-[12px] text-gray-400">
-          You can also paste the MCP URL from Settings &gt; Agents (Developers or
-          Public API on older versions) in the Instance URL, it includes the key.
+          {t(
+            'ui_self_hosted_mcp_url_hint',
+            'You can also paste the MCP URL from Settings > Agents (Developers or Public API on older versions) in the Instance URL, it includes the key.'
+          )}
         </div>
       </div>
 
@@ -131,7 +151,11 @@ export const OAuthSelfHosted: FC<{
             autoComplete="email"
           />
           <div className="text-[12px] text-gray-400">
-            {appName} uses it to identify your account.
+            {t(
+              'ui_self_hosted_email_hint',
+              '{{appName}} uses it to identify your account.',
+              { appName, interpolation: { escapeValue: false } }
+            )}
           </div>
         </div>
       )}
@@ -146,7 +170,9 @@ export const OAuthSelfHosted: FC<{
           }
           className="flex-1 bg-[#612BD3] hover:bg-[#7B3FF2] disabled:opacity-50 text-white rounded-[8px] py-[10px] px-[16px] text-[14px] font-semibold transition-colors"
         >
-          {submitting ? 'Connecting...' : 'Connect'}
+          {submitting
+            ? t('ui_connecting', 'Connecting...')
+            : t('connect', 'Connect')}
         </button>
         <button
           type="button"
@@ -154,12 +180,15 @@ export const OAuthSelfHosted: FC<{
           disabled={submitting}
           className="flex-1 bg-[#2A2929] hover:bg-[#3A3939] disabled:opacity-50 text-white rounded-[8px] py-[10px] px-[16px] text-[14px] font-semibold transition-colors"
         >
-          Back
+          {t('back', 'Back')}
         </button>
       </div>
 
       <div className="text-[12px] text-gray-400 text-center">
-        Your instance has to be reachable from the internet over https.
+        {t(
+          'ui_self_hosted_https_hint',
+          'Your instance has to be reachable from the internet over https.'
+        )}
       </div>
     </form>
   );

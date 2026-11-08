@@ -9,6 +9,7 @@ import { useLaunchStore } from '@gitroom/frontend/components/new-launch/store';
 import { useVariables } from '@gitroom/react/helpers/variable.context';
 import { useModals } from '@gitroom/frontend/components/layout/new-modal';
 import { MediaBox } from '@gitroom/frontend/components/media/media.component';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 const postUrlEmitter = new EventEmitter();
 
 export const MediaSettingsLayout = () => {
@@ -102,6 +103,7 @@ export const CreateThumbnail: FC<{
   onAltTextChange?: (altText: string) => void;
 }> = (props) => {
   const { onSelect, media } = props;
+  const t = useT();
   const { backendUrl } = useVariables();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -196,12 +198,15 @@ export const CreateThumbnail: FC<{
       } catch (fallbackError) {
         console.error('Fallback capture also failed:', fallbackError);
         alert(
-          'Unable to capture frame. This might be due to CORS restrictions on the video source.'
+          t(
+            'ui_unable_to_capture_frame',
+            'Unable to capture frame. This might be due to CORS restrictions on the video source.'
+          )
         );
         setIsCapturing(false);
       }
     }
-  }, [onSelect, currentTime]);
+  }, [onSelect, currentTime, t]);
 
   const formatTime = useCallback((seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -258,7 +263,9 @@ export const CreateThumbnail: FC<{
               disabled={isCapturing}
               className="bg-forth text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isCapturing ? 'Capturing...' : 'Select This Frame'}
+              {isCapturing
+                ? t('ui_capturing', 'Capturing...')
+                : t('ui_select_this_frame', 'Select This Frame')}
             </button>
           </div>
         </>
@@ -311,6 +318,7 @@ export const MediaComponentInner: FC<{
     | undefined;
 }> = (props) => {
   const { onClose, onSelect, media } = props;
+  const t = useT();
   const setActivateExitButton = useLaunchStore((e) => e.setActivateExitButton);
   const newFetch = useFetch();
   const modals = useModals();
@@ -369,13 +377,16 @@ export const MediaComponentInner: FC<{
     <div className="mt-[10px] flex flex-col gap-[20px]">
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-textColor font-medium">
-          Alt Text (for accessibility)
+          {t('ui_alt_text_accessibility', 'Alt Text (for accessibility)')}
         </label>
         <input
           type="text"
           value={altText}
           onChange={(e) => setAltText(e.target.value)}
-          placeholder="Describe the image/video content..."
+          placeholder={t(
+            'ui_describe_media_content',
+            'Describe the image/video content...'
+          )}
           className="w-full px-3 py-2 bg-fifth border border-tableBorder rounded-lg text-textColor placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-forth focus:border-transparent"
         />
       </div>
@@ -386,11 +397,13 @@ export const MediaComponentInner: FC<{
             {!isEditingThumbnail ? (
               <div className="flex flex-col">
                 <div className="flex flex-col space-y-2">
-                  <span className="text-sm text-textColor">Thumbnail:</span>
+                  <span className="text-sm text-textColor">
+                    {t('ui_thumbnail_colon', 'Thumbnail:')}
+                  </span>
                   {(newThumbnail || thumbnail) && (
                     <img
                       src={newThumbnail || thumbnail}
-                      alt="Current thumbnail"
+                      alt={t('ui_current_thumbnail', 'Current thumbnail')}
                       className="max-w-full max-h-[500px] object-contain rounded-lg border border-tableBorder"
                     />
                   )}
@@ -403,13 +416,13 @@ export const MediaComponentInner: FC<{
                     onClick={() => setIsEditingThumbnail(true)}
                     className="bg-third text-textColor px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all flex-1 border border-tableBorder whitespace-nowrap"
                   >
-                    Select Frame
+                    {t('ui_select_frame', 'Select Frame')}
                   </button>
                   <button
                     disabled={loading}
                     onClick={() =>
                       modals.openModal({
-                        title: 'Media Library',
+                        title: t('media_library', 'Media Library'),
                         askClose: false,
                         closeOnEscape: true,
                         fullScreen: true,
@@ -433,7 +446,7 @@ export const MediaComponentInner: FC<{
                     }
                     className="bg-third text-textColor px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all flex-1 border border-tableBorder whitespace-nowrap"
                   >
-                    From Gallery
+                    {t('ui_from_gallery', 'From Gallery')}
                   </button>
                   {(thumbnail || newThumbnail) && (
                     <button
@@ -444,7 +457,7 @@ export const MediaComponentInner: FC<{
                       }}
                       className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all flex-1 border border-red-700 whitespace-nowrap"
                     >
-                      Clear
+                      {t('clear', 'Clear')}
                     </button>
                   )}
                 </div>
@@ -472,7 +485,7 @@ export const MediaComponentInner: FC<{
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span>Back</span>
+                    <span>{t('back', 'Back')}</span>
                   </button>
                 </div>
 
@@ -507,13 +520,13 @@ export const MediaComponentInner: FC<{
             onClick={onClose}
             className="flex-1 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all"
           >
-            Cancel
+            {t('cancel', 'Cancel')}
           </button>
           <button
             onClick={save}
             className="flex-1 bg-forth text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all"
           >
-            Save Changes
+            {t('ui_save_changes', 'Save Changes')}
           </button>
         </div>
       )}

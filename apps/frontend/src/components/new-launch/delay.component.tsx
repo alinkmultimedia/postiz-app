@@ -74,7 +74,7 @@ export const DelayComponent: FC<{
   const getCurrentDelayLabel = () => {
     if (!currentDelay) return null;
     const option = delayOptions.find((opt) => opt.value === currentDelay);
-    return option?.label || `${currentDelay} min`;
+    return option?.label || `${currentDelay} ${t('ui_minutes_short', 'min')}`;
   };
 
   return (
@@ -118,7 +118,7 @@ export const DelayComponent: FC<{
                 value={customValue}
                 onChange={(e) => setCustomValue(e.target.value)}
                 onClick={(e) => e.stopPropagation()}
-                placeholder="Custom min"
+                placeholder={t('ui_custom_minutes', 'Custom min')}
                 className={clsx(
                   'flex-1 w-full h-[32px] px-[8px] rounded-[4px] bg-newBgColor border text-[13px] outline-none focus:border-[#612BD3]',
                   isCustomDelay ? 'border-[#612BD3]' : 'border-newTextColor/10'
@@ -135,7 +135,7 @@ export const DelayComponent: FC<{
                 }}
                 className="h-[32px] px-[10px] rounded-[4px] bg-[#612BD3] text-white text-[12px] font-[600] hover:bg-[#612BD3]/80"
               >
-                Set
+                {t('ui_set', 'Set')}
               </button>
             </div>
           </div>
@@ -144,7 +144,7 @@ export const DelayComponent: FC<{
               onClick={() => handleSelectDelay(0)}
               className="mt-[8px] h-[32px] w-full rounded-[4px] text-[13px] text-red-400 hover:bg-red-400/10"
             >
-              Remove delay
+              {t('ui_remove_delay', 'Remove delay')}
             </button>
           )}
         </div>

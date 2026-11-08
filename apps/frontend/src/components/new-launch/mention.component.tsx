@@ -3,6 +3,7 @@
 import React, { FC, useEffect, useImperativeHandle, useState } from 'react';
 import { computePosition, flip, shift } from '@floating-ui/dom';
 import { posToDOMRect, ReactRenderer } from '@tiptap/react';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 // Debounce utility for TipTap
 const debounce = <T extends any[]>(
@@ -27,6 +28,7 @@ const debounce = <T extends any[]>(
 };
 
 const MentionList: FC = (props: any) => {
+  const t = useT();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const selectItem = (index: number) => {
@@ -82,16 +84,19 @@ const MentionList: FC = (props: any) => {
     <div className="dropdown-menu bg-newBgColorInner text-textColor border border-tableBorder rounded-lg shadow-menu max-h-60 overflow-y-auto p-2">
       {props?.items?.none ? (
         <div className="flex items-center justify-center p-2 text-textItemBlur">
-          We don't have autocomplete for this social media
+          {t(
+            'ui_no_autocomplete_for_social',
+            "We don't have autocomplete for this social media"
+          )}
         </div>
       ) : props?.loading ? (
         <div className="flex items-center justify-center p-2 text-textItemBlur">
-          Loading...
+          {t('ui_loading_dots', 'Loading...')}
         </div>
       ) : props?.items ? (
         props.items.length === 0 ? (
           <div className="p-2 text-textItemBlur text-center">
-            No results found
+            {t('ui_no_results_found', 'No results found')}
           </div>
         ) : (
           props?.items?.map((item: any, index: any) => (
@@ -112,7 +117,9 @@ const MentionList: FC = (props: any) => {
           ))
         )
       ) : (
-        <div className="p-2 text-textItemBlur text-center">Loading...</div>
+        <div className="p-2 text-textItemBlur text-center">
+          {t('ui_loading_dots', 'Loading...')}
+        </div>
       )}
     </div>
   );

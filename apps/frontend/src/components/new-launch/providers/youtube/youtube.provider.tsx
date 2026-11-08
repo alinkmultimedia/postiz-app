@@ -16,14 +16,17 @@ import { YoutubePreview } from '@gitroom/frontend/components/new-launch/provider
 const type = [
   {
     label: 'Public',
+    tKey: 'ui_yt_public',
     value: 'public',
   },
   {
     label: 'Private',
+    tKey: 'ui_private',
     value: 'private',
   },
   {
     label: 'Unlisted',
+    tKey: 'ui_yt_unlisted',
     value: 'unlisted',
   },
 ];
@@ -31,10 +34,12 @@ const type = [
 const madeForKids = [
   {
     label: 'No',
+    tKey: 'no',
     value: 'no',
   },
   {
     label: 'Yes',
+    tKey: 'yes',
     value: 'yes',
   },
 ];
@@ -53,9 +58,9 @@ const YoutubeSettings: FC = () => {
           value: 'public',
         })}
       >
-        {type.map((t) => (
-          <option key={t.value} value={t.value}>
-            {t.label}
+        {type.map((item) => (
+          <option key={item.value} value={item.value}>
+            {t(item.tKey, item.label)}
           </option>
         ))}
       </Select>
@@ -65,9 +70,9 @@ const YoutubeSettings: FC = () => {
           value: 'no',
         })}
       >
-        {madeForKids.map((t) => (
-          <option key={t.value} value={t.value}>
-            {t.label}
+        {madeForKids.map((item) => (
+          <option key={item.value} value={item.value}>
+            {t(item.tKey, item.label)}
           </option>
         ))}
       </Select>

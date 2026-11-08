@@ -214,7 +214,10 @@ export const PlatformAnalytics = () => {
                 onClick={() => {
                   if (integration.refreshNeeded) {
                     toaster.show(
-                      'Please refresh the integration from the calendar',
+                      t(
+                        'ui_refresh_integration_from_calendar',
+                        'Please refresh the integration from the calendar'
+                      ),
                       'warning'
                     );
                     return;

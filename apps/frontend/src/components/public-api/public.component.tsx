@@ -279,12 +279,19 @@ export const CopyButton = ({
   label: string;
 }) => {
   const toaster = useToaster();
+  const t = useT();
   return (
     <button
       type="button"
       onClick={() => {
         copy(text);
-        toaster.show(`${label} copied to clipboard`, 'success');
+        toaster.show(
+          t('ui_label_copied_to_clipboard', '{{label}} copied to clipboard', {
+            label,
+            interpolation: { escapeValue: false },
+          }),
+          'success'
+        );
       }}
       className="cursor-pointer px-[16px] h-[36px] bg-btnSimple hover:bg-boxHover transition-colors rounded-[8px] text-[13px] font-[600] flex items-center gap-[6px]"
     >
@@ -575,14 +582,17 @@ const McpSection = ({
 export const localCliSteps = [
   {
     label: 'Install the CLI',
+    tKey: 'ui_cli_step_install',
     code: 'npm install -g postiz',
   },
   {
     label: 'Run: postiz auth:login',
+    tKey: 'ui_cli_step_login',
     code: 'postiz auth:login',
   },
   {
     label: 'Install the Postiz skill for your AI agent',
+    tKey: 'ui_cli_step_skill',
     code: 'npx skills add gitroomhq/postiz-agent',
   },
 ] as const;
@@ -590,14 +600,17 @@ export const localCliSteps = [
 const ciCliSteps = [
   {
     label: 'Install the CLI',
+    tKey: 'ui_cli_step_install',
     code: 'npm install -g postiz',
   },
   {
     label: 'Set your API key as an environment variable',
+    tKey: 'ui_cli_step_env',
     code: 'export POSTIZ_API_KEY="{API_KEY}"',
   },
   {
     label: 'Install the Postiz skill for your AI agent',
+    tKey: 'ui_cli_step_skill',
     code: 'npx skills add gitroomhq/postiz-agent',
   },
 ] as const;
@@ -674,7 +687,7 @@ const CliSection = ({ apiKey }: { apiKey: string }) => {
         {displaySteps.map((step, i) => (
           <div key={i} className="flex flex-col gap-[6px]">
             <div className="text-[13px] font-[600] text-customColor18">
-              {i + 1}. {step.label}
+              {i + 1}. {t(step.tKey, step.label)}
             </div>
             <pre className="bg-newBgColorInner border border-newBorder rounded-[8px] p-[16px] text-[13px] whitespace-pre-wrap break-all overflow-x-auto leading-[1.6]">
               {step.code}

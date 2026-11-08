@@ -37,12 +37,19 @@ const CopyButton = ({
   label: string;
 }) => {
   const toaster = useToaster();
+  const t = useT();
   return (
     <button
       type="button"
       onClick={() => {
         copy(text);
-        toaster.show(`${label} copied to clipboard`, 'success');
+        toaster.show(
+          t('ui_label_copied_to_clipboard', '{{label}} copied to clipboard', {
+            label,
+            interpolation: { escapeValue: false },
+          }),
+          'success'
+        );
       }}
       className="cursor-pointer px-[16px] h-[36px] bg-btnSimple hover:bg-boxHover transition-colors rounded-[8px] text-[13px] font-[600] flex items-center gap-[6px]"
     >
@@ -118,7 +125,13 @@ export const DeveloperComponent: FC = () => {
 
   const createApp = useCallback(async () => {
     if (!name || !redirectUrl) {
-      toaster.show('Name and Redirect URL are required', 'warning');
+      toaster.show(
+        t(
+          'ui_oauth_app_name_redirect_required',
+          'Name and Redirect URL are required'
+        ),
+        'warning'
+      );
       return;
     }
     try {
@@ -137,14 +150,17 @@ export const DeveloperComponent: FC = () => {
       if (result.clientSecret) {
         setPlaintextSecret(result.clientSecret);
         toaster.show(
-          'App created! Copy your client secret now - it will only be shown once.',
+          t(
+            'ui_oauth_app_created',
+            'App created! Copy your client secret now - it will only be shown once.'
+          ),
           'success'
         );
       }
       setCreating(false);
       mutate();
     } catch {
-      toaster.show('Failed to create app', 'warning');
+      toaster.show(t('ui_oauth_app_create_failed', 'Failed to create app'), 'warning');
     }
   }, [name, description, redirectUrl, pictureId]);
 
@@ -159,21 +175,23 @@ export const DeveloperComponent: FC = () => {
           pictureId,
         }),
       });
-      toaster.show('App updated', 'success');
+      toaster.show(t('ui_oauth_app_updated', 'App updated'), 'success');
       setEditing(false);
       mutate();
     } catch {
-      toaster.show('Failed to update app', 'warning');
+      toaster.show(t('ui_oauth_app_update_failed', 'Failed to update app'), 'warning');
     }
   }, [name, description, redirectUrl, pictureId]);
 
   const rotateSecret = useCallback(async () => {
     const approved = await decision.open({
-      title: 'Rotate Client Secret?',
-      description:
-        'This will generate a new client secret and invalidate the current one. Any integrations using the old secret will stop working.',
-      approveLabel: 'Rotate',
-      cancelLabel: 'Cancel',
+      title: t('ui_rotate_client_secret_title', 'Rotate Client Secret?'),
+      description: t(
+        'ui_rotate_client_secret_description',
+        'This will generate a new client secret and invalidate the current one. Any integrations using the old secret will stop working.'
+      ),
+      approveLabel: t('ui_rotate', 'Rotate'),
+      cancelLabel: t('cancel', 'Cancel'),
     });
     if (!approved) return;
     try {
@@ -183,34 +201,39 @@ export const DeveloperComponent: FC = () => {
       if (result.clientSecret) {
         setPlaintextSecret(result.clientSecret);
         toaster.show(
-          'Secret rotated! Copy your new client secret now.',
+          t(
+            'ui_secret_rotated',
+            'Secret rotated! Copy your new client secret now.'
+          ),
           'success'
         );
         mutate();
       }
     } catch {
-      toaster.show('Failed to rotate secret', 'warning');
+      toaster.show(t('ui_secret_rotate_failed', 'Failed to rotate secret'), 'warning');
     }
-  }, [decision]);
+  }, [decision, t]);
 
   const deleteApp = useCallback(async () => {
     const approved = await decision.open({
-      title: 'Delete OAuth App?',
-      description:
-        'This will delete the OAuth application and revoke all user authorizations. This action cannot be undone.',
-      approveLabel: 'Delete',
-      cancelLabel: 'Cancel',
+      title: t('ui_delete_oauth_app_title', 'Delete OAuth App?'),
+      description: t(
+        'ui_delete_oauth_app_description',
+        'This will delete the OAuth application and revoke all user authorizations. This action cannot be undone.'
+      ),
+      approveLabel: t('delete', 'Delete'),
+      cancelLabel: t('cancel', 'Cancel'),
     });
     if (!approved) return;
     try {
       await fetch('/user/oauth-app', { method: 'DELETE' });
-      toaster.show('OAuth app deleted', 'success');
+      toaster.show(t('ui_oauth_app_deleted', 'OAuth app deleted'), 'success');
       setPlaintextSecret(null);
       mutate();
     } catch {
-      toaster.show('Failed to delete app', 'warning');
+      toaster.show(t('ui_oauth_app_delete_failed', 'Failed to delete app'), 'warning');
     }
-  }, [decision]);
+  }, [decision, t]);
 
   if (app === undefined) {
     return null;
@@ -305,7 +328,7 @@ export const DeveloperComponent: FC = () => {
                 className="bg-newBgColorInner border border-newBorder rounded-[8px] px-[16px] h-[44px] text-textColor outline-none"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="My Application"
+                placeholder={t('ui_my_application', 'My Application')}
                 maxLength={100}
               />
             </div>
@@ -317,7 +340,10 @@ export const DeveloperComponent: FC = () => {
                 className="bg-newBgColorInner border border-newBorder rounded-[8px] p-[16px] text-textColor outline-none min-h-[80px]"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe what your app does"
+                placeholder={t(
+                  'ui_describe_your_app',
+                  'Describe what your app does'
+                )}
                 maxLength={500}
               />
             </div>
@@ -329,7 +355,7 @@ export const DeveloperComponent: FC = () => {
                 {picturePath ? (
                   <img
                     src={picturePath}
-                    alt="App picture"
+                    alt={t('ui_app_picture', 'App picture')}
                     className="w-[48px] h-[48px] rounded-full object-cover"
                   />
                 ) : (
@@ -429,7 +455,7 @@ export const DeveloperComponent: FC = () => {
                 className="bg-newBgColorInner border border-newBorder rounded-[8px] px-[16px] h-[44px] text-textColor outline-none"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="My Application"
+                placeholder={t('ui_my_application', 'My Application')}
                 maxLength={100}
               />
             </div>
@@ -441,7 +467,10 @@ export const DeveloperComponent: FC = () => {
                 className="bg-newBgColorInner border border-newBorder rounded-[8px] p-[16px] text-textColor outline-none min-h-[80px]"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe what your app does"
+                placeholder={t(
+                  'ui_describe_your_app',
+                  'Describe what your app does'
+                )}
                 maxLength={500}
               />
             </div>
@@ -453,7 +482,7 @@ export const DeveloperComponent: FC = () => {
                 {picturePath ? (
                   <img
                     src={picturePath}
-                    alt="App picture"
+                    alt={t('ui_app_picture', 'App picture')}
                     className="w-[48px] h-[48px] rounded-full object-cover"
                   />
                 ) : (

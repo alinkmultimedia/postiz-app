@@ -84,6 +84,7 @@ export const PlugPop: FC<{
   const { closeAll } = useModals();
   const fetch = useFetch();
   const toaster = useToaster();
+  const t = useT();
   const values = useMemo(() => {
     if (!data?.data) {
       return {};
@@ -102,7 +103,7 @@ export const PlugPop: FC<{
           ...acc,
           [field.name]: field.validation
             ? string().matches(convertBackRegex(field.validation), {
-                message: 'Invalid value',
+                message: t('ui_invalid_value', 'Invalid value'),
               })
             : null,
         };
@@ -125,11 +126,9 @@ export const PlugPop: FC<{
         })),
       }),
     });
-    toaster.show('Plug updated', 'success');
+    toaster.show(t('ui_plug_updated', 'Plug updated'), 'success');
     closeAll();
   }, []);
-
-  const t = useT();
 
   return (
     <FormProvider {...form}>
@@ -222,6 +221,7 @@ export const PlugItem: FC<{
 export const Plug = () => {
   const plug = usePlugs();
   const modals = useModals();
+  const t = useT();
   const fetch = useFetch();
   const load = useCallback(async () => {
     return (await fetch(`/integrations/${plug.providerId}/plugs`)).json();
@@ -243,7 +243,10 @@ export const Plug = () => {
             mutate();
           },
           size: '500px',
-          title: `Auto Plug: ${p.title}`,
+          title: t('top_title_auto_plug', 'Auto Plug: {{title}}', {
+            title: p.title,
+            interpolation: { escapeValue: false },
+          }),
           children: (
             <PlugPop
               plug={p}

@@ -180,7 +180,11 @@ const Plug: FC<{
             >
               {delayOptions.map((p) => (
                 <option key={p.name} value={p.value}>
-                  {p.name}
+                  {p.value === 0
+                    ? t('ui_delay_immediately', 'Immediately')
+                    : t('ui_delay_hours', '{{count}} hours', {
+                        count: p.value / 3600000,
+                      })}
                 </option>
               ))}
             </Select>

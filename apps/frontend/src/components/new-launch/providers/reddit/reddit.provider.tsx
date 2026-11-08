@@ -75,6 +75,7 @@ const RenderRedditComponent: FC<{
 };
 const RedditPreview: FC = (props) => {
   const { value: topValue, integration } = useIntegration();
+  const t = useT();
   const settings = useWatch({
     name: 'subreddit',
   }) as Array<RedditSettingsValueDto>;
@@ -86,7 +87,14 @@ const RedditPreview: FC = (props) => {
     },
   });
   if (!settings || !settings.length) {
-    return <>Please add at least one Subreddit from the settings</>;
+    return (
+      <>
+        {t(
+          'ui_reddit_add_subreddit_from_settings',
+          'Please add at least one Subreddit from the settings'
+        )}
+      </>
+    );
   }
   return (
     <div className="flex flex-col gap-[40px] w-full">

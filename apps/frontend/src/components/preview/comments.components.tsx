@@ -1,6 +1,7 @@
 'use client';
 
 import { useUser } from '@gitroom/frontend/components/layout/user.context';
+import { formatDateTime } from '@gitroom/frontend/components/layout/date.formats';
 import { Button } from '@gitroom/react/form/button';
 import { Input } from '@gitroom/react/form/input';
 import { Textarea } from '@gitroom/react/form/textarea';
@@ -314,7 +315,7 @@ const CommentBody: FC<{ comment: PreviewComment }> = ({ comment }) => {
       </div>
       <div className="text-[12px] text-textItemBlur">
         {comment.name || t('reviewer', 'Reviewer')} ·{' '}
-        {newDayjs(comment.createdAt).format('MMM D, YYYY HH:mm')}
+        {formatDateTime(newDayjs(comment.createdAt), true)}
       </div>
     </div>
   );

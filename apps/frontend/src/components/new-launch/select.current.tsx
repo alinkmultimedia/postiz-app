@@ -53,6 +53,7 @@ export function useHasScroll(ref: RefObject<HTMLElement | null>): boolean {
 
 export const SelectCurrent: FC = () => {
   const modals = useDecisionModal();
+  const t = useT();
   const existingData = useExistingData();
   const {
     selectedIntegrations,
@@ -80,9 +81,11 @@ export const SelectCurrent: FC = () => {
       e.stopPropagation();
       e.preventDefault();
       const open = await modals.open({
-        title: 'Remove Social Account',
-        description:
-          'Are you sure you want to remove this social from scheduling?',
+        title: t('ui_remove_social_account', 'Remove Social Account'),
+        description: t(
+          'ui_remove_social_account_confirm',
+          'Are you sure you want to remove this social from scheduling?'
+        ),
       });
 
       if (!open) {

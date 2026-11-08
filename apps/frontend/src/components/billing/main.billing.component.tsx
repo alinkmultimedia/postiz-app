@@ -1,6 +1,7 @@
 'use client';
 
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { formatShortDate } from '@gitroom/frontend/components/layout/date.formats';
 import { Button } from '@gitroom/react/form/button';
 import { useFetch } from '@gitroom/helpers/utils/custom.fetch';
 import { Subscription } from '@prisma/client';
@@ -184,7 +185,7 @@ const BillingCycle: FC<{
                   )
                 : t('billing_renews_on', 'Your plan renews on')}{' '}
               <bdi className="font-[600] text-newTextColor">
-                {fromUtc(renewal.renewsAt * 1000).format('D MMM, YYYY')}
+                {formatShortDate(fromUtc(renewal.renewsAt * 1000))}
               </bdi>
               {'. '}
             </>
@@ -831,7 +832,7 @@ export const MainBillingComponent: FC<{
       return {
         label: subscription?.cancelAt
           ? t('billing_downgrade_on', 'Downgrade on {{date}}', {
-              date: fromUtc(subscription.cancelAt).format('D MMM, YYYY'),
+              date: formatShortDate(fromUtc(subscription.cancelAt)),
             })
           : t('cancel_subscription_1', 'Cancel subscription'),
         onClick: moveToCheckout('FREE'),
@@ -914,7 +915,7 @@ export const MainBillingComponent: FC<{
               'Your subscription will be canceled at'
             )}{' '}
             <bdi className="font-[600]">
-              {fromUtc(subscription.cancelAt).format('D MMM, YYYY')}
+              {formatShortDate(fromUtc(subscription.cancelAt))}
             </bdi>
             {'. '}
             {t(

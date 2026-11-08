@@ -29,10 +29,14 @@ export default async function AuthLayout({
         </div>
         <div className="text-[36px] flex-1 pt-[88px] hidden lg:flex flex-col items-center">
           <div className="text-center">
-            Over <span className="text-[42px] text-[#FC69FF]">20,000+</span>{' '}
-            Entrepreneurs use
+            {t('ui_auth_over', 'Over')}{' '}
+            <span className="text-[42px] text-[#FC69FF]">20,000+</span>{' '}
+            {t('ui_auth_entrepreneurs_use', 'Entrepreneurs use')}
             <br />
-            Postiz To Grow Their Social Presence
+            {t(
+              'ui_auth_grow_social_presence',
+              'Veltrante To Grow Their Social Presence'
+            )}
           </div>
           <TestimonialComponent />
         </div>

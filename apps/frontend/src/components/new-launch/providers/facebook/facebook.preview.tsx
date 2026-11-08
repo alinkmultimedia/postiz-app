@@ -8,6 +8,7 @@ import { getPresetBackground } from '@gitroom/frontend/components/new-launch/pro
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { VideoOrImage } from '@gitroom/react/helpers/video.or.image';
+import { useT } from '@gitroom/react/translation/get.transation.service.client';
 
 const Icons = () => {
   return (
@@ -68,6 +69,7 @@ export const FacebookPreview: FC<{
   const { value: topValue, integration } = useIntegration();
   const current = useLaunchStore((state) => state.current);
   const mediaDir = useMediaDirectory();
+  const t = useT();
 
   // Facebook only renders the background on text-only posts up to 130 chars, so
   // reflect the real outcome here: the background shows when it will actually be
@@ -112,7 +114,10 @@ export const FacebookPreview: FC<{
         .replace(/\[\[\[([.\s\S]*?)]]]/, (match, match1) => {
           return `<span class="font-bold font-[arial]" style="color: #ae8afc">${match1}</span>`;
         }) +
-      `<mark class="bg-red-500" data-tooltip-id="tooltip" data-tooltip-content="This text will be cropped">` +
+      `<mark class="bg-red-500" data-tooltip-id="tooltip" data-tooltip-content="${t(
+        'ui_text_will_be_cropped',
+        'This text will be cropped'
+      )}">` +
       newContent.slice(end).replace(/\[\[\[([.\s\S]*?)]]]/, (match, match1) => {
         return `<span class="font-bold font-[arial]" style="color: #ae8afc">${match1}</span>`;
       }) +
@@ -186,10 +191,14 @@ export const FacebookPreview: FC<{
       <div className="flex text-textLinkedin text-[12px] font-[400] items-center">
         <div className="flex flex-1 gap-[10px] items-center">
           <Icons />
-          <div className="">You & 12 other</div>
+          <div className="">
+            {t('ui_preview_you_and_others', 'You & {{n}} other', { n: 12 })}
+          </div>
         </div>
         <div className="gap-[9px] items-center flex">
-          <div>20 Comments</div>
+          <div>
+            {t('ui_preview_comments_count', '{{n}} Comments', { n: 20 })}
+          </div>
         </div>
       </div>
       <div className="pt-[8px] flex text-[14px] font-[700] px-[32px] justify-between border-t border-borderLinkedin text-textLinkedin">
@@ -206,7 +215,7 @@ export const FacebookPreview: FC<{
               fill="currentColor"
             />
           </svg>
-          <div>Like</div>
+          <div>{t('ui_preview_like', 'Like')}</div>
         </div>
         <div className="flex gap-[4px] items-center">
           <svg
@@ -240,7 +249,7 @@ export const FacebookPreview: FC<{
               />
             </g>
           </svg>
-          <div>Comments</div>
+          <div>{t('ui_preview_comments', 'Comments')}</div>
         </div>
         <div className="flex gap-[4px] items-center">
           <svg
@@ -255,13 +264,15 @@ export const FacebookPreview: FC<{
               fill="currentColor"
             />
           </svg>
-          <div>Share</div>
+          <div>{t('ui_preview_share', 'Share')}</div>
         </div>
       </div>
       {renderContent.length > 1 && (
         <>
           <div className="flex items-center">
-            <div className="text-[14px] font-[700]">Most relevant</div>
+            <div className="text-[14px] font-[700]">
+              {t('ui_preview_most_relevant', 'Most relevant')}
+            </div>
             <div>
               <svg
                 width="20"
@@ -324,8 +335,12 @@ export const FacebookPreview: FC<{
                   <div className="flex font-[400] text-[12px] text-textLinkedin items-center">
                     <div className="flex gap-[16px] flex-1">
                       <div className="font-[700]">9h</div>
-                      <div className="font-[700]">Like</div>
-                      <div className="font-[700]">Reply</div>
+                      <div className="font-[700]">
+                        {t('ui_preview_like', 'Like')}
+                      </div>
+                      <div className="font-[700]">
+                        {t('reply', 'Reply')}
+                      </div>
                     </div>
                     <div className="flex gap-[4px]">
                       <div>2</div>
