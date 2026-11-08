@@ -42,6 +42,13 @@ export const FacebookSettings = () => {
   const presetAvailable = postCurrentType !== 'story' && !hasMedia;
   const selectedBg = getPresetBackground(preset);
 
+  // New posts start as a regular Post, also when the saved settings have no type.
+  useEffect(() => {
+    if (!postCurrentType) {
+      setValue('post_type', 'post');
+    }
+  }, [postCurrentType, setValue]);
+
   // Clear any selected background when it can no longer apply (story / media),
   // so a stray combination never reaches the provider.
   useEffect(() => {
@@ -59,9 +66,6 @@ export const FacebookSettings = () => {
             value: 'post',
           })}
         >
-          <option value="">
-            {t('select_post_type', 'Select Post Type...')}
-          </option>
           {postType.map((item) => (
             <option key={item.value} value={item.value}>
               {t(item.tKey, item.label)}

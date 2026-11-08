@@ -4,7 +4,7 @@ import {
   PostComment,
   withProvider,
 } from '@gitroom/frontend/components/new-launch/providers/high.order.provider';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Select } from '@gitroom/react/form/select';
 import { Checkbox } from '@gitroom/react/form/checkbox';
 import { useSettings } from '@gitroom/frontend/components/launches/helpers/use.values';
@@ -43,12 +43,18 @@ const InstagramCollaborators: FC<{
   values?: any;
 }> = (props) => {
   const t = useT();
-  const { watch, register, formState, control } = useSettings();
+  const { watch, register, formState, control, setValue } = useSettings();
   const { integration } = useIntegration();
   const postCurrentType = watch('post_type');
   const isTrialReel = watch('is_trial_reel');
   // The Audio API is only available with Facebook Login, not Instagram Login
   const supportsAudio = integration?.identifier === 'instagram';
+  // New posts start as a Post / Reel, also when the saved settings have no type.
+  useEffect(() => {
+    if (!postCurrentType) {
+      setValue('post_type', 'post');
+    }
+  }, [postCurrentType, setValue]);
   return (
     <>
       <Select
@@ -57,7 +63,6 @@ const InstagramCollaborators: FC<{
           value: 'post',
         })}
       >
-        <option value="">{t('select_post_type', 'Select Post Type...')}</option>
         {postType.map((item) => (
           <option key={item.value} value={item.value}>
             {t(item.tKey, item.label)}
