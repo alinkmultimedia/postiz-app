@@ -7,6 +7,24 @@ import { TemporalService } from 'nestjs-temporal-core';
 import { timer } from '@gitroom/helpers/utils/timer';
 import { randomUUID } from 'crypto';
 
+// Notification messages are plain text, so the urls in them would not be
+// clickable in the email. Wrap bare urls in <a>, leaving tags and existing
+// links as they are.
+export function linkifyPlainUrls(html: string) {
+  const urlRegex = /\bhttps?:\/\/[^\s<>"']*[^\s<>"'.,;:!?)]/gi;
+  return (html || '')
+    .split(/(<a\b[\s\S]*?<\/a>|<[^>]*>)/i)
+    .map((part, index) =>
+      index % 2 === 1
+        ? part
+        : part.replace(urlRegex, (url) => {
+            const safe = url.replace(/&(?!amp;)/g, '&amp;');
+            return `<a href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
+          })
+    )
+    .join('');
+}
+
 @Injectable()
 export class EmailService {
   emailService: EmailInterface;
@@ -101,7 +119,7 @@ export class EmailService {
                 margin-bottom: 2rem;
                 color: #374151;
             ">
-                ${html}
+                ${linkifyPlainUrls(html)}
             </div>
             
             <div style="

@@ -26,6 +26,17 @@ import { DashboardFunction } from '@gitroom/nestjs-libraries/integrations/dashbo
 
 export const META_GRAPH_API_VERSION = 'v25.0';
 
+// The Graph API returns post ids as "<pageId>_<postId>". Facebook's own
+// permalink_url (facebook.com/<pageId>/posts/<postId>) often lands on the
+// page instead of the post, so build the permalink.php link, which opens it.
+export function facebookPostUrl(graphId: string, fallback?: string) {
+  const match = /^(\d+)_(\d+)$/.exec(graphId || '');
+  if (!match) {
+    return fallback || '';
+  }
+  return `https://www.facebook.com/permalink.php?story_fbid=${match[2]}&id=${match[1]}`;
+}
+
 @Rules(
   "Facebook posts can be text only, or include photos or a video. If it's a story, it must have at least one attachment (photo or video), and each media is published as a separate story. Video posts (not stories) can carry an optional title."
 )
@@ -972,7 +983,7 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
 
       const { id: postId, permalink_url, ...all } = feedResult;
 
-      finalUrl = permalink_url;
+      finalUrl = facebookPostUrl(postId, permalink_url);
       finalId = postId;
     }
 
